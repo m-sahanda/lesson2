@@ -1,3 +1,11 @@
 This is the Hello World example from the GitHowTo tutorial.
 (changed in origin and pushed to shared)
 and new changes
+
+
+add new branch branch_for_pr
+
+first need pull origin than create new branch from origin main
+make some changes in your branch and commit
+push branch to origin
+and make PR
