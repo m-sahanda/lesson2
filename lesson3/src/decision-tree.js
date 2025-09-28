@@ -38,9 +38,8 @@ if (strNum) {
     console.log(strNum, 'strNum-----is true-----');
 }
 
-if (!undef) {
+if (!undef)
     console.log(undef, '!undef-----is true-----');
-}
 
 const shortIf = typeof strNum !== 'number' ? strNum : Number.parseInt(strNum);
 console.log('strNum is not number than our comparison is true and save strNum as shortIf-----', shortIf, typeof shortIf);
