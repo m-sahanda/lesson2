@@ -48,7 +48,7 @@ const transformed = booleanArray.map((b) => !b);
 console.log('transformed:', transformed);
 
 console.log('work with anyArray------------------', anyArray);
-const arrayOfArrays = [...stringArray, ...numberArray, ...booleanArray, ...anyArray];
+export const arrayOfArrays = [...stringArray, ...numberArray, ...booleanArray, ...anyArray];
 console.log('arrayOfArrays:', arrayOfArrays);
 arrayOfArrays.filter((v) => typeof v === 'object').forEach((v, index) => console.log(v, index));
 arrayOfArrays.forEach((value, index) => console.log(`anyArray[${index}] (${typeof value}) =`, value));
