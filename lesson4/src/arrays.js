@@ -56,7 +56,7 @@ arrayOfArrays.filter((v) => typeof v === 'object').forEach((v, index) => console
 arrayOfArrays.forEach((value, index) => console.log(`anyArray[${index}] (${typeof value}) =`, value));
 
 function arrayMap(array) {
-    const newArray = array.map((v) => {
+    return array.map((v) => {
         const type = Array.isArray(v) ? 'array' : typeof v;
         if (type === 'string') return `string:${v}`;
         if (type === 'number') return `number:${v * 2}`;
@@ -65,7 +65,6 @@ function arrayMap(array) {
         if (type === 'object') return `object:=${JSON.stringify(v)}`;
         return type;
     });
-    return newArray;
 }
 const mappedArray1 = arrayMap(arrayOfArrays);
 console.log('arrayMap:', mappedArray1);
