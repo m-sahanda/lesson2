@@ -10,7 +10,7 @@ for (let i = 100; i >= 0; i -= 10) {
     console.log(i);
 }
 
-for (const item of arrayOfArrays) {
-    if (typeof item === 'function') continue;
-    console.log(item);
+for (const [index, item] of arrayOfArrays.entries()) {
+    if (typeof item === 'function') continue; // пропустити функції
+    console.log(item, index);
 }
