@@ -47,8 +47,6 @@ console.log('trueCount:', trueCount);
 const transformed = booleanArray.map((b) => !b);
 console.log('transformed:', transformed);
 
-// 4) Any array (mixed types)
-
 console.log('work with anyArray------------------', anyArray);
 const arrayOfArrays = [...stringArray, ...numberArray, ...booleanArray, ...anyArray];
 console.log('arrayOfArrays:', arrayOfArrays);
