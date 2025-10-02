@@ -32,7 +32,7 @@ console.log('newArray:', newArray);
 const squared = numberArray.map((n) => n * n);
 console.log('squared:', squared);
 
-const sortedArray = numberArray.sort((a, b) => a - b);
+const sortedArray = [...numberArray].sort((a, b) => a - b);
 console.log('sorted:', sortedArray);
 
 const sum = numberArray.reduce((acc, item) => acc + item, 0);
