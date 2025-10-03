@@ -14,3 +14,15 @@ for (const [index, item] of arrayOfArrays.entries()) {
     if (typeof item === 'function') continue;
     console.log(item, index);
 }
+
+let iterator = 0;
+while (iterator <= 9) {
+    console.log(iterator);
+    iterator++;
+}
+
+let i = 100;
+do {
+    console.log(i);
+    i -= 10;
+} while (i >= 0);
