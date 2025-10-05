@@ -1,11 +1,10 @@
-const stringArray = ['1', '2', '3', '4'];
-const numberArray = [1, 2, 3, 4];
-const anyArray = ['text', 42, '2', '5', { objKey: 33 }, [21, 92]];
-const num = 3;
+import { arrayArifmetics } from './arrow-functions.js';
+import { stringArray, numberArray, anyArray, num } from './arrow-functions.js';
 
 function sumArray(arr, type = 'number') {
     if (!Array.isArray(arr)) {
-        throw new TypeError(`Expected an array. Initial value is ${arr} and has type ${typeof arr}`);
+        console.error(`Expected an array. Initial value is ${arr} and has type ${typeof arr}`);
+        return;
     }
     const sumOfArrayValues = filterArrayByType(arr, type).reduce((acc, value) => acc + Number(value), 0);
     Number.isFinite(sumOfArrayValues)
@@ -15,14 +14,15 @@ function sumArray(arr, type = 'number') {
 
 function sumArrayNumbers(arr) {
     if (!Array.isArray(arr)) {
-        throw new TypeError(`Expected an array. Initial value is ${arr} and has type ${typeof arr}`);
+        console.error(`Expected an array. Initial value is ${arr} and has type ${typeof arr}`);
+        return;
     }
     let sumOfArrayValues = 0;
     arr.forEach((item) => {
         if (Number.isFinite(Number(item))) {
             sumOfArrayValues += Number(item);
         } else {
-            console.log('sumOfArrayValues:', `not a number, it is ${typeof item} and value is ${item}`);
+            console.log(`Array value is not a number, it is ${typeof item} and value is ${item}`);
         }
     });
     console.log('sumOfArrayValues:', sumOfArrayValues);
@@ -37,10 +37,11 @@ sumArray(numberArray);
 sumArray([...stringArray, ...numberArray]);
 sumArray(anyArray, 'number');
 sumArray(anyArray, 'string');
-// sumArray(num);
 
 sumArrayNumbers(stringArray);
+arrayArifmetics.sumArrayNumbers(stringArray);
 sumArrayNumbers(numberArray);
 sumArrayNumbers([...stringArray, ...numberArray]);
 sumArrayNumbers(anyArray);
 sumArrayNumbers(num);
+sumArray(num);
