@@ -28,8 +28,24 @@ export class ArrayArifmetics {
         });
         console.log('sumOfArrayValues:', sumOfArrayValues);
     };
-    filterArrayByType(arr, type) {
+    filterArrayByType = (arr, type) => {
         return arr.filter((item) => typeof item === type);
+    };
+
+    printToConsole(string) {
+        console.log(string);
+    }
+
+    printToConsoleErr(string) {
+        console.error(string);
+    }
+
+    checkingPrintToConsoleType(value, printToConsoleValue, printToConsoleErrValue) {
+        if (typeof value === 'string') {
+            printToConsoleValue(value);
+        } else {
+            printToConsoleErrValue(value);
+        }
     }
 }
 
@@ -46,4 +62,8 @@ arrayArifmetics.sumArrayNumbers(numberArray);
 arrayArifmetics.sumArrayNumbers([...stringArray, ...numberArray]);
 arrayArifmetics.sumArrayNumbers(anyArray);
 arrayArifmetics.sumArrayNumbers(num);
+
+arrayArifmetics.checkingPrintToConsoleType('some string', arrayArifmetics.printToConsole, arrayArifmetics.printToConsoleErr);
+arrayArifmetics.checkingPrintToConsoleType(23, arrayArifmetics.printToConsole, arrayArifmetics.printToConsoleErr);
+
 console.log('-----------The end of arrow-functions.js-----------');
