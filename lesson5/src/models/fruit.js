@@ -20,6 +20,7 @@ export class Fruit {
     get color() {
         return this.#color.toUpperCase();
     }
+
     set color(value) {
         this.#color = value.trim();
     }
