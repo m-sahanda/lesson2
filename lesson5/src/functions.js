@@ -6,7 +6,9 @@ function sumArray(arr, type = 'number') {
         console.error(`Expected an array. Initial value is ${arr} and has type ${typeof arr}`);
         return;
     }
+
     const sumOfArrayValues = filterArrayByType(arr, type).reduce((acc, value) => acc + Number(value), 0);
+
     Number.isFinite(sumOfArrayValues)
         ? console.log('sumOfArrayValues:', sumOfArrayValues)
         : console.log('sumOfArrayValues:', 'not a number');
@@ -17,7 +19,9 @@ function sumArrayNumbers(arr) {
         console.error(`Expected an array. Initial value is ${arr} and has type ${typeof arr}`);
         return;
     }
+
     let sumOfArrayValues = 0;
+
     arr.forEach((item) => {
         if (Number.isFinite(Number(item))) {
             sumOfArrayValues += Number(item);
@@ -25,6 +29,7 @@ function sumArrayNumbers(arr) {
             console.log(`Array value is not a number, it is ${typeof item} and value is ${item}`);
         }
     });
+
     console.log('sumOfArrayValues:', sumOfArrayValues);
 }
 
