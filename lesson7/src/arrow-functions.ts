@@ -1,18 +1,19 @@
-export const stringArray: string[] = ['1', '2', '3', '4'];
+export const stringArray: string[] = ['2', '2', '3', '4'];
 export const numberArray: number[] = [1, 2, 3, 4];
 export const anyArray: unknown[] = ['text', 42, '2', '5', { objKey: 33 }, [21, 92]];
+export const booleanArray: boolean[] = [true, false, true, false];
 export const num = 3;
 
 export enum TypeOfValue {
     Number = 'number',
     String = 'string',
-    Object = 'object'
+    Boolean = 'boolean'
 }
 
 export class ArrayArithmetic {
-    public sumArray = (arr: unknown[], type: TypeOfValue = TypeOfValue.Number): void => {
+    public sumArray = (arr: (string | number | boolean)[], type: TypeOfValue = TypeOfValue.Number): void => {
         const sumOfArrayValues: number = this.filterArrayByType(arr, type).reduce(
-            (acc: number, value: unknown): number => acc + Number(value),
+            (acc: number, value: string | number | boolean): number => acc + Number(value),
             0
         );
 
@@ -21,10 +22,10 @@ export class ArrayArithmetic {
             : console.log('sumOfArrayValues:', `not a number ${sumOfArrayValues}`);
     };
 
-    public sumArrayNumbers = (arr: unknown[]): void => {
+    public sumArrayNumbers = (arr: (string | number | boolean)[]): void => {
         let sumOfArrayValues = 0;
 
-        arr.forEach((item: unknown): void => {
+        arr.forEach((item: string | number | boolean): void => {
             if (Number.isFinite(Number(item))) {
                 sumOfArrayValues += Number(item);
             } else {
@@ -35,8 +36,8 @@ export class ArrayArithmetic {
         console.log('sumOfArrayValues:', sumOfArrayValues);
     };
 
-    private filterArrayByType = (arr: unknown[], type: TypeOfValue): unknown[] => {
-        return arr.filter((item: unknown): boolean => typeof item === type);
+    private filterArrayByType = (arr: (string | number | boolean)[], type: TypeOfValue): (string | number | boolean)[] => {
+        return arr.filter((item: string | number | boolean): boolean => typeof item === type);
     };
 
     public printToConsole(string: string): void {
@@ -63,20 +64,19 @@ export class ArrayArithmetic {
 export const arrayArithmetic = new ArrayArithmetic();
 
 arrayArithmetic.sumArray(stringArray, TypeOfValue.String);
+arrayArithmetic.sumArray(booleanArray, TypeOfValue.Boolean);
+arrayArithmetic.sumArray(booleanArray, TypeOfValue.Number);
 arrayArithmetic.sumArray(numberArray);
-arrayArithmetic.sumArray([...stringArray, ...numberArray]);
-arrayArithmetic.sumArray(anyArray, TypeOfValue.Number);
-arrayArithmetic.sumArray(anyArray, TypeOfValue.String);
-arrayArithmetic.sumArray(anyArray, TypeOfValue.Object);
 
 arrayArithmetic.sumArrayNumbers(stringArray);
 arrayArithmetic.sumArrayNumbers(numberArray);
 arrayArithmetic.sumArrayNumbers([...stringArray, ...numberArray]);
-arrayArithmetic.sumArrayNumbers(anyArray);
+arrayArithmetic.sumArrayNumbers([...stringArray, ...numberArray, ...booleanArray]);
+arrayArithmetic.sumArray([...stringArray, ...numberArray, ...booleanArray], TypeOfValue.Boolean);
 
 // arrayArithmetic.sumArrayNumbers(num); - this will not work because num is not an array. That`s why we choose TS)
 
 arrayArithmetic.checkingPrintToConsoleType('some string');
 arrayArithmetic.checkingPrintToConsoleType(23);
-
+arrayArithmetic.sumArray(booleanArray, TypeOfValue.Boolean);
 console.log('-----------The end of arrow-functions.ts-----------');
