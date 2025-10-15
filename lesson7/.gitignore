@@ -3,4 +3,3 @@ node_modules/
 .idea/
 build/
 /src/**/*.js
-/src/**/*.js.map
