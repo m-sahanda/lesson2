@@ -2,3 +2,5 @@ node_modules/
 .vscode/
 .idea/
 build/
+/src/**/*.js
+/src/**/*.js.map
