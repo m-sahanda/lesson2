@@ -12,22 +12,21 @@ export enum TypeOfValue {
 
 export class ArrayArithmetic {
     public sumArray = (arr: (string | number | boolean)[], type: TypeOfValue = TypeOfValue.Number): void => {
-        const sumOfArrayValues: number = this.filterArrayByType(arr, type).reduce(
-            (acc: number, value: string | number | boolean): number => acc + Number(value),
-            0
-        );
+        const sumOfArrayValues = this.filterArrayByType(arr, type)
+            .map((value) => (typeof value === 'number' ? value : Number(value)))
+            .filter((number) => Number.isFinite(number))
+            .reduce((acc, number) => acc + number, 0);
 
-        Number.isFinite(sumOfArrayValues)
-            ? console.log('sumOfArrayValues:', sumOfArrayValues)
-            : console.log('sumOfArrayValues:', `not a number ${sumOfArrayValues}`);
+        console.log('sumOfArrayValues:', sumOfArrayValues);
     };
 
     public sumArrayNumbers = (arr: (string | number | boolean)[]): void => {
         let sumOfArrayValues = 0;
 
         arr.forEach((item: string | number | boolean): void => {
-            if (Number.isFinite(Number(item))) {
-                sumOfArrayValues += Number(item);
+            const valueToNumber = Number(item);
+            if (Number.isFinite(valueToNumber)) {
+                sumOfArrayValues += valueToNumber;
             } else {
                 console.log(`Array value is not a number, it is ${typeof item} and value is ${item}`);
             }

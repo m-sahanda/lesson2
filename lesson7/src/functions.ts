@@ -1,22 +1,21 @@
 import { arrayArithmetic, numberArray, stringArray, TypeOfValue } from './arrow-functions';
 
 function sumArray(arr: (string | number | boolean)[], type = 'number'): void {
-    const sumOfArrayValues: number = filterArrayByType(arr, type).reduce(
-        (acc: number, value: string | number | boolean): number => acc + Number(value),
-        0
-    );
+    const sumOfArrayValues = filterArrayByType(arr, type)
+        .map((value) => (typeof value === 'number' ? value : Number(value)))
+        .filter((number) => Number.isFinite(number))
+        .reduce((acc, number) => acc + number, 0);
 
-    Number.isFinite(sumOfArrayValues)
-        ? console.log('sumOfArrayValues:', sumOfArrayValues)
-        : console.log('sumOfArrayValues:', 'not a number');
+    console.log('sumOfArrayValues:', sumOfArrayValues);
 }
 
 function sumArrayNumbers(arr: (string | number | boolean)[]): void {
     let sumOfArrayValues = 0;
 
     arr.forEach((item: string | number | boolean): void => {
-        if (Number.isFinite(Number(item))) {
-            sumOfArrayValues += Number(item);
+        const valueToNumber = Number(item);
+        if (Number.isFinite(valueToNumber)) {
+            sumOfArrayValues += valueToNumber;
         } else {
             console.log(`Array value is not a number, it is ${typeof item} and value is ${item}`);
         }
