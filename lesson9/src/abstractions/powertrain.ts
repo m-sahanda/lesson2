@@ -6,6 +6,7 @@ export interface IPowertrain {
     stop(): void;
     consume(distanceKm: number, fuelTank: IFuelTank): number;
     rangeKm(storage: IFuelTank): number;
+    consumptionPer100(): number;
 }
 
 export class Engine implements IPowertrain {
@@ -53,6 +54,10 @@ export class Engine implements IPowertrain {
 
     public rangeKm(fuelTank: IFuelTank): number {
         return (fuelTank.amount() / this.consumption) * 100;
+    }
+
+    public consumptionPer100(): number {
+        return this.consumption;
     }
 }
 
@@ -115,5 +120,9 @@ export class ElectricMotor implements IPowertrain {
 
     public rangeKm(battery: IFuelTank): number {
         return (battery.amount() / this.kWhPer100km) * 100;
+    }
+
+    public consumptionPer100(): number {
+        return this.kWhPer100km;
     }
 }

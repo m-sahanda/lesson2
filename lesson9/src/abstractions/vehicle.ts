@@ -3,7 +3,6 @@ import { IFuelTank } from './fuel-tank';
 
 export interface IVehicle {
     readonly name: string;
-    readonly type: string;
     start(): void;
     stop(): void;
     drive(distanceKm: number): number;
@@ -14,9 +13,8 @@ export interface IVehicle {
     info(): string;
 }
 
-export abstract class Car implements IVehicle {
+export class Car implements IVehicle {
     public readonly name: string;
-    public abstract readonly type: string;
     protected powertrain: IPowertrain;
     protected fuelTank: IFuelTank;
 
@@ -59,6 +57,6 @@ export abstract class Car implements IVehicle {
     }
 
     public info(): string {
-        return `${this.type} ${this.name} [${this.powertrain.kind}] — range: ${this.rangeKm()} km, fuel: ${this.fuelLeft()} ${this.fuelUnit()}`;
+        return `${this.name} [${this.powertrain.kind}] — range: ${this.rangeKm()} km, fuel: ${this.fuelLeft()} ${this.fuelUnit()}`;
     }
 }
