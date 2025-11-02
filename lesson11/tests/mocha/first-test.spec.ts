@@ -4,6 +4,7 @@ import { ChargerTypeC, Phone, Laptop, Headphones } from '../../src/abstractions/
 import { ICharger } from '../../src/abstractions/charger.dto';
 import { ApiObjectInterfaceSummary } from '../../src/models/api-objects-class';
 import { ApiObjectRawDto } from '../../src/models/api-objets.dto';
+import { getApiObjectResponseWithClass, getApiObjectResponseWithInterface, transformInterfaceToSummaries } from '../../src';
 
 describe('lesson11: sinon mocks/stubs', () => {
     afterEach(() => {
@@ -99,5 +100,59 @@ describe('lesson11: sinon mocks/stubs', () => {
         expect(summary.title).to.equal('Stub object painted in (red)');
         expect(summary.price).to.equal('Please call as to get a price');
         expect(summary.capacityGb).to.equal('Unknown capacity, you can call as to get a capacity');
+    });
+
+    it('getApiObjectResponseWithInterface should call fetch with the correct URL and return typed rows', async () => {
+        const rows: ApiObjectRawDto[] = [
+            { id: '1', name: 'Item 1', data: { color: 'red', price: 10, ['capacity GB']: 64 } },
+            { id: '2', name: 'Item 2', data: { color: 'blue', price: 20, Capacity: 128 } }
+        ];
+
+        const response = stubInterface<Response>();
+        response.json.resolves(rows as ApiObjectRawDto[]);
+
+        const fetchStub = sinon.stub(globalThis, 'fetch').resolves(response as unknown as Response);
+
+        const result = await getApiObjectResponseWithInterface();
+
+        expect(fetchStub.calledOnceWith('https://api.restful-api.dev/objects')).to.be.true;
+        expect(response.json.calledOnce).to.be.true;
+        expect(result).to.deep.equal(rows);
+
+        fetchStub.restore();
+    });
+
+    it('transformInterfaceToSummaries should call fetch with the correct URL and return typed rows', () => {
+        const rows: ApiObjectRawDto[] = [
+            { id: '1', name: 'Item 1', data: { color: 'red', price: 10, ['capacity GB']: 64 } },
+            { id: '2', name: 'Item 2', data: { color: 'blue', price: 20, Capacity: 128 } }
+        ];
+
+        const expectedRows = rows.map((r) => new ApiObjectInterfaceSummary(r));
+
+        const response = stubInterface<Response>();
+        response.json.resolves(rows as ApiObjectRawDto[]);
+
+        const fetchStub = sinon.stub(globalThis, 'fetch').resolves(response as unknown as Response);
+        const result = transformInterfaceToSummaries(rows);
+
+        expect(result).to.deep.equal(expectedRows);
+
+        fetchStub.restore();
+    });
+
+    it('getApiObjectResponseWithClass should return an empty array when API returns no objects', async () => {
+        const response = stubInterface<Response>();
+        response.json.resolves([] as ApiObjectRawDto[]);
+
+        const fetchStub = sinon.stub(globalThis, 'fetch').resolves(response as unknown as Response);
+
+        const result = await getApiObjectResponseWithClass();
+
+        expect(fetchStub.calledOnceWith('https://api.restful-api.dev/objects')).to.be.true;
+        expect(response.json.calledOnce).to.be.true;
+        expect(result).to.deep.equal([]);
+
+        fetchStub.restore();
     });
 });

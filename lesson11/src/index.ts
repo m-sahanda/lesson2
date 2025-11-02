@@ -2,13 +2,13 @@ import { ApiObjectDataResponse, ApiObjectInterfaceSummary } from './models/api-o
 import { ApiObjectRawDto } from './models/api-objets.dto';
 import { Headphones, Laptop, Phone, ChargerTypeC } from './abstractions/abstract-devices-class';
 
-async function getApiObjectResponseWithInterface(): Promise<ApiObjectRawDto[]> {
+export async function getApiObjectResponseWithInterface(): Promise<ApiObjectRawDto[]> {
     const response = await fetch('https://api.restful-api.dev/objects');
     const json = await response.json();
     return json as ApiObjectRawDto[];
 }
 
-async function getApiObjectResponseWithClass(): Promise<ApiObjectDataResponse[]> {
+export async function getApiObjectResponseWithClass(): Promise<ApiObjectDataResponse[]> {
     const response = await fetch('https://api.restful-api.dev/objects');
     const json = await response.json();
     return (json as Record<string, unknown>[]).map((row) => new ApiObjectDataResponse(row));
