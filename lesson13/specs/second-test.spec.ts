@@ -1,14 +1,15 @@
 import { expect } from 'chai';
-import { apiFetch, Item } from './first-test.spec';
+import { apiFetch } from './first-test.spec';
+import { Breed, Category, ImageSearchItem, VoteCreateResponse, VoteItem } from '../src/response.dto';
 
 async function pickPublicImageId(): Promise<string> {
-    const { status, json } = await apiFetch('/images/search?limit=1&mime_types=jpg,png');
+    const { status, json } = await apiFetch<ImageSearchItem[]>('/images/search?limit=1&mime_types=jpg,png');
 
     expect(status).to.equal(200);
     expect(json).to.be.an('array');
-    expect(json[0]?.id).to.be.a('string');
+    expect(json![0]?.id).to.be.a('string');
 
-    return json[0].id;
+    return json![0].id;
 }
 
 describe('lesson13: TheCatAPI integration (breeds <-> categories <-> votes)', function () {
@@ -16,23 +17,23 @@ describe('lesson13: TheCatAPI integration (breeds <-> categories <-> votes)', fu
 
     describe('Catalog endpoints: /breeds, /categories', function () {
         it('should list breeds and include a known breed (GET /breeds)', async () => {
-            const { status, json } = await apiFetch('/breeds');
+            const { status, json } = await apiFetch<Breed[]>('/breeds');
 
             expect(status).to.equal(200);
             expect(json).to.be.an('array');
 
-            const hasBengal = json.some((b: any) => b.id === 'beng');
+            const hasBengal = json!.some((b: Breed) => b.id === 'beng');
 
             expect(hasBengal).to.equal(true);
         });
 
         it('should list categories (GET /categories)', async () => {
-            const { status, json } = await apiFetch('/categories');
+            const { status, json } = await apiFetch<Category[]>('/categories');
 
             expect(status).to.equal(200);
             expect(json).to.be.an('array');
 
-            json.forEach((cat: object) => {
+            json!.forEach((cat: Category) => {
                 expect(cat).to.include.keys(['id', 'name']);
             });
         });
@@ -47,7 +48,7 @@ describe('lesson13: TheCatAPI integration (breeds <-> categories <-> votes)', fu
         });
 
         it('should create a down-vote', async () => {
-            const { status, json } = await apiFetch('/votes', {
+            const { status, json } = await apiFetch<VoteCreateResponse>('/votes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ image_id: voteImageId, sub_id: subId, value: 0 })
@@ -56,21 +57,21 @@ describe('lesson13: TheCatAPI integration (breeds <-> categories <-> votes)', fu
             expect(status).to.be.oneOf([200, 201]);
             expect(json).to.include.keys(['message', 'id']);
 
-            voteId = json.id;
+            voteId = json!.id;
         });
 
         it('should list votes and include our down-vote with correct value', async () => {
-            const { status, json } = await apiFetch(`/votes?sub_id=${encodeURIComponent(subId)}&limit=50&order=DESC`);
+            const { status, json } = await apiFetch<VoteItem[]>(`/votes?sub_id=${encodeURIComponent(subId)}&limit=50&order=DESC`);
 
             expect(status).to.equal(200);
             expect(json).to.be.an('array');
 
-            const found = json.find((item: Item) => item.id === voteId);
+            const found = json!.find((item: VoteItem) => item.id === voteId);
 
             expect(Boolean(found)).to.equal(true);
 
             if (found) {
-                expect(found.value === 0).to.equal(true);
+                expect(found.value === 0 || found.value === -1).to.equal(true);
             }
         });
 

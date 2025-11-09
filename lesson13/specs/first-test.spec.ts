@@ -1,17 +1,20 @@
 import { expect } from 'chai';
 import fs from 'node:fs';
 import path from 'node:path';
+import {
+    ActionMessage,
+    FavouriteCreateResponse,
+    FavouriteItem,
+    ImageById,
+    UploadImageResponse,
+    VoteCreateResponse,
+    VoteItem
+} from '../src/response.dto';
 
 const CAT_API_KEY = 'live_mwdw32B2DdrTwTHMipNUCFsvstE6GnBq2IqdfND8XhnlyrF8YT9nVhHekm5h71Mf';
 const BASE = 'https://api.thecatapi.com/v1';
 
-export interface Item {
-    id?: string;
-    image_id?: string;
-    sub_id?: string;
-}
-
-export async function apiFetch<T = any>(url: string, init?: RequestInit): Promise<{ status: number; json: T | null }> {
+export async function apiFetch<T = unknown>(url: string, init?: RequestInit): Promise<{ status: number; json: T | null }> {
     const res = await fetch(`${BASE}${url}`, {
         ...init,
         headers: {
@@ -56,28 +59,28 @@ describe('lesson13: TheCatAPI integration (images <-> favourites <-> votes)', fu
         form.append('file', blob, 'upload.jpg');
         form.append('sub_id', subId);
 
-        const { status, json } = await apiFetch('/images/upload', {
+        const { status, json } = await apiFetch<UploadImageResponse>('/images/upload', {
             method: 'POST',
             body: form
         });
 
         expect(status).to.be.oneOf([200, 201]);
         expect(json).to.be.an('object');
-        expect(json.id).to.be.a('string');
+        expect(json!.id).to.be.a('string');
 
-        imageId = json.id;
+        imageId = json!.id;
     });
 
     it('should get image by id (images/:id)', async () => {
-        const { status, json } = await apiFetch(`/images/${imageId}`);
+        const { status, json } = await apiFetch<ImageById>(`/images/${imageId}`);
 
         expect(status).to.equal(200);
         expect(json).to.be.an('object');
-        expect(json.id).to.equal(imageId);
+        expect(json!.id).to.equal(imageId);
     });
 
     it('should create a favourite for the uploaded image (POST /favourites)', async () => {
-        const { status, json } = await apiFetch('/favourites', {
+        const { status, json } = await apiFetch<FavouriteCreateResponse>('/favourites', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ image_id: imageId, sub_id: subId })
@@ -86,22 +89,22 @@ describe('lesson13: TheCatAPI integration (images <-> favourites <-> votes)', fu
         expect(status).to.be.oneOf([200, 201]);
         expect(json).to.include.keys(['message', 'id']);
 
-        favouriteId = json.id;
+        favouriteId = json!.id;
     });
 
     it('should list favourites and include our favourite (GET /favourites)', async () => {
-        const { status, json } = await apiFetch(`/favourites?sub_id=${encodeURIComponent(subId)}&limit=100&order=DESC`);
+        const { status, json } = await apiFetch<FavouriteItem[]>(`/favourites?sub_id=${encodeURIComponent(subId)}&limit=100&order=DESC`);
 
         expect(status).to.equal(200);
         expect(json).to.be.an('array');
 
-        const found = json.find((item: Item) => item.id === favouriteId);
+        const found = json!.find((item: FavouriteItem) => item.id === favouriteId);
 
         expect(Boolean(found)).to.equal(true);
     });
 
     it('should create an up-vote for the image (POST /votes)', async () => {
-        const { status, json } = await apiFetch('/votes', {
+        const { status, json } = await apiFetch<VoteCreateResponse>('/votes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ image_id: imageId, sub_id: subId, value: 1 })
@@ -110,38 +113,38 @@ describe('lesson13: TheCatAPI integration (images <-> favourites <-> votes)', fu
         expect(status).to.be.oneOf([200, 201]);
         expect(json).to.include.keys(['message', 'id']);
 
-        voteId = json.id;
+        voteId = json!.id;
     });
 
     it('should list votes and include our vote (GET /votes)', async () => {
-        const { status, json } = await apiFetch(`/votes?sub_id=${encodeURIComponent(subId)}&limit=100&order=DESC`);
+        const { status, json } = await apiFetch<VoteItem[]>(`/votes?sub_id=${encodeURIComponent(subId)}&limit=100&order=DESC`);
 
         expect(status).to.equal(200);
         expect(json).to.be.an('array');
 
-        const found = json.find((item: Item) => item.id === voteId);
+        const found = json!.find((item: VoteItem) => item.id === voteId);
 
         expect(Boolean(found)).to.equal(true);
     });
 
     it('should delete the vote (DELETE /votes/:vote_id)', async () => {
-        const { status, json } = await apiFetch(`/votes/${voteId}`, {
+        const { status, json } = await apiFetch<ActionMessage>(`/votes/${voteId}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
         });
 
         expect(status).to.be.equal(200);
-        expect(json.message).to.include('SUCCESS');
+        expect(json!.message).to.include('SUCCESS');
     });
 
     it('should delete the favourite (DELETE /favourites/:favourite_id)', async () => {
-        const { status, json } = await apiFetch(`/favourites/${favouriteId}`, {
+        const { status, json } = await apiFetch<ActionMessage>(`/favourites/${favouriteId}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
         });
 
         expect(status).to.be.equal(200);
-        expect(json.message).to.include('SUCCESS');
+        expect(json!.message).to.include('SUCCESS');
     });
 
     it('should delete the uploaded image (DELETE /images/:image_id)', async () => {
