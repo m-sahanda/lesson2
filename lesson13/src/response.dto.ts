@@ -27,10 +27,15 @@ export interface FavouriteItem {
     id: number;
     image_id: string;
     sub_id?: string;
+    image: UploadImageResponse;
 }
 
 export interface VoteCreateResponse extends ActionMessage {
     id: number;
+    image_id: string;
+    sub_id?: string;
+    value: number;
+    image: UploadImageResponse;
 }
 
 export interface VoteItem {
@@ -38,6 +43,7 @@ export interface VoteItem {
     image_id: string;
     sub_id?: string;
     value: number;
+    image: UploadImageResponse;
 }
 
 export interface Breed {

@@ -8,7 +8,9 @@ import {
     ImageById,
     UploadImageResponse,
     VoteCreateResponse,
-    VoteItem
+    VoteItem,
+    Breed,
+    Category
 } from '../src/response.dto';
 
 const CAT_API_KEY = 'live_mwdw32B2DdrTwTHMipNUCFsvstE6GnBq2IqdfND8XhnlyrF8YT9nVhHekm5h71Mf';
@@ -101,6 +103,11 @@ describe('lesson13: TheCatAPI integration (images <-> favourites <-> votes)', fu
         const found = json!.find((item: FavouriteItem) => item.id === favouriteId);
 
         expect(Boolean(found)).to.equal(true);
+        expect(json?.length).to.equal(1);
+        expect(json![0].image).to.be.an('object');
+        expect(json![0].image).to.include.keys(['id', 'url']);
+        expect(json![0].image.id).to.equal(imageId);
+        expect(json![0].image.url).to.includes(imageId);
     });
 
     it('should create an up-vote for the image (POST /votes)', async () => {
@@ -112,6 +119,7 @@ describe('lesson13: TheCatAPI integration (images <-> favourites <-> votes)', fu
 
         expect(status).to.be.oneOf([200, 201]);
         expect(json).to.include.keys(['message', 'id']);
+        expect(json!.image_id).to.equal(imageId);
 
         voteId = json!.id;
     });
@@ -125,6 +133,11 @@ describe('lesson13: TheCatAPI integration (images <-> favourites <-> votes)', fu
         const found = json!.find((item: VoteItem) => item.id === voteId);
 
         expect(Boolean(found)).to.equal(true);
+        expect(json?.length).to.equal(1);
+        expect(json![0].image).to.be.an('object');
+        expect(json![0].image).to.include.keys(['id', 'url']);
+        expect(json![0].image.id).to.equal(imageId);
+        expect(json![0].image.url).to.includes(imageId);
     });
 
     it('should delete the vote (DELETE /votes/:vote_id)', async () => {
@@ -153,5 +166,29 @@ describe('lesson13: TheCatAPI integration (images <-> favourites <-> votes)', fu
         });
 
         expect(status).to.be.oneOf([200, 204]);
+    });
+
+    describe('Catalog endpoints: /breeds, /categories', function () {
+        it('should list breeds and include a known breed (GET /breeds)', async () => {
+            const { status, json } = await apiFetch<Breed[]>('/breeds');
+
+            expect(status).to.equal(200);
+            expect(json).to.be.an('array');
+
+            const hasBengal = json!.some((b: Breed) => b.id === 'beng');
+
+            expect(hasBengal).to.equal(true);
+        });
+
+        it('should list categories (GET /categories)', async () => {
+            const { status, json } = await apiFetch<Category[]>('/categories');
+
+            expect(status).to.equal(200);
+            expect(json).to.be.an('array');
+
+            json!.forEach((cat: Category) => {
+                expect(cat).to.include.keys(['id', 'name']);
+            });
+        });
     });
 });
