@@ -1,0 +1,87 @@
+base_url = https://comfy.ua/ua/
+
+Case 1 {
+Знайти input 
+	//form[@method='get']//input[@class='head-sf__input']
+
+В інпут вводимо Lenovo
+
+Клікаємо кнопці Submit
+	//form[@method='get']//button[@type='submit']
+
+Очікуємо елемент опису знайдених товарів
+	const element = $x("//h1[@class='brand-common-template__title']")[0].textContent
+	expect(element.toLowerCase()).to.includes('lenovo')
+	const counter = $x("//span[@class='category-controls-desktop__pagination-info-total']")[0].textContent
+	expect(counter).to.be.at.least(1);
+}
+
+Case 2 {
+Знаходимо кнопку Каталог і клікаємо по ній
+	//button[contains(@class, 'head-bt-cnt__catalog-btn')] 
+
+Очікуємо відкриття каталогу
+	//div[contains(@class, "q-dialog__inner")]
+
+Перевіряємо що property hidden=false
+	expect($x("//div[contains(@class, 'q-dialog__inner')]")[0].hidden).to.equal(false)
+
+Шукаємо категорію телевізои
+	(//div[contains(@class, 'cat-menu__items')]/a)[6]  - можна так
+	//a[.//span[contains(text(), 'Телевізори та мультимедіа')]] - але так точно знайдемо отрібну нам категорію
+
+	const elementText = $x("//a[.//span[contains(text(), 'Телевізори та мультимедіа')]]")[0].textContent
+	expect(elementText.toLowerCase()).to.includes('телевізори')
+
+Клікаємо на категорію Телевізори 
+	//a[.//span[contains(text(), 'Телевізори та мультимедіа')]]
+
+Очікуємо елемент перевіряємо що категорія відповідає тій по якій ми клікнули
+	//h1[contains(@class, 'info-portal__name')]
+	const categoryText = $x("//h1[contains(@class, 'info-portal__name')]")[0].textContent
+	expect(categoryText.toLowerCase()).to.includes('телевізори')
+}
+	
+
+Case 3 {
+Шукаємо елемент	
+	.promo-categories
+
+Превіряємо відображення
+	const isHidden = $(".promo-categories")[0].hidden
+	expect(hidden).to.equal(false);
+
+Шукаємо категорію Кращ і перевіимо текст
+	.promo-categories .home-section__header_custom-wr .home-section__title
+	сonst categoryText = $(".promo-categories .home-section__header_custom-wr .home-section__title")[0].textContent
+	expect(categoryText.toLowerCase()).to.includes('кращ')
+
+Шукаємо кнопку Дивитися всі і клікаємо
+	.promo-categories .home-section__header_custom-wr .home-section__more-link
+
+Очікуємо елемент назви категорії
+	.category-info__name
+	const categoryName = $(".category-info__name")[0].textContent
+	expect(categoryName.tLowerCase()).o.includes('кращ')
+}
+
+Case 4 {
+Шукаємо перший товар на сторінці
+	.home-section--list:nth-child(1) .prdl-item:nth-child(1)
+
+Зберігаємо назву товару
+	const itemTitle = $(".home-section--list:nth-child(1) .prdl-item:nth-child(1)")[0].textContent
+	const itemHref = $(".home-section--list:nth-child(1) .prdl-item:nth-child(1) .prdl-item__header-row .prdl-item__code")[0].href
+
+Клікаємо по цьому товару 
+
+Очікуємо елементи
+	const currentUrl = window.location.href
+	expect(currentUrl).to.equal(itemHref) - в даному випадку така перевірка не несе великого сенсу,
+	    але у випадках коли фронт підкидає в урл квері параметри то там є сенс перевіряти
+
+	const currentItemTitle = $(".product-title")[0].textContent
+	expect(itemTitle.toLowerCase()).to.includes(currentItemTitle.toLowerCase())
+
+Але в цьому кейсі скоріше за все потрібна буде нормалізація (так як там багато намішаноі не факт що перевірка відпрацює), але з іншого боку думаю кодом буде простіше інші елементи перевірити чи то текст чи видимість якихось елементів
+}
