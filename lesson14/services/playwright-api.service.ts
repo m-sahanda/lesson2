@@ -18,12 +18,8 @@ export class PlaywrightApiService implements IApiService<APIResponse> {
     ): Promise<APIResponse> {
         const apiHeaders = this.getDefaultHeaders(headers);
         const requestContext = await this.getRequestContext();
-        const response = await requestContext.get(endpoint, {
-            headers: apiHeaders,
-            params: params
-        });
 
-        return response;
+        return await requestContext.get(endpoint, { headers: apiHeaders, params: params });
     }
 
     public async post(endpoint: string, body: unknown, headers?: Record<string, string>): Promise<APIResponse> {
