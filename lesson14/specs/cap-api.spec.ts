@@ -1,5 +1,4 @@
-import { expect } from 'chai';
-import fs from 'node:fs';
+import { assert, expect } from 'chai';
 import path from 'node:path';
 import { FavouriteItem, VoteItem, Breed, Category } from '../models/cat-api.dto';
 import { catApi } from '../api/cat.api.constructor';
@@ -13,14 +12,7 @@ describe('lesson14: TheCatAPI integration (images <-> favourites <-> votes)', fu
     let voteId: number | undefined;
 
     it('should upload an image (images/upload) and return it id', async () => {
-        const buffer = fs.readFileSync(imageFile);
-        const form = new FormData();
-        const blob = new Blob([buffer], { type: 'image/jpeg' });
-
-        form.append('file', blob, 'upload.jpg');
-        form.append('sub_id', subId);
-
-        const [response, responseData] = await catApi.image.uploadImage(form);
+        const [response, responseData] = await catApi.image.uploadImage(imageFile, subId);
 
         expect(response.status()).to.eq(201);
         expect(response.statusText()).to.eq('Created');
@@ -54,7 +46,10 @@ describe('lesson14: TheCatAPI integration (images <-> favourites <-> votes)', fu
 
         const found = responseData.find((item: FavouriteItem) => item.id === favouriteId);
 
-        expect(Boolean(found)).to.equal(true);
+        expect(found).to.not.be.undefined;
+        assert.isDefined(found);
+        expect(found).to.exist;
+        expect(found).to.be.ok;
         expect(responseData.length).to.equal(1);
         expect(responseData[0].image).to.be.an('object');
         expect(responseData[0].image).to.include.keys(['id', 'url']);
@@ -85,7 +80,7 @@ describe('lesson14: TheCatAPI integration (images <-> favourites <-> votes)', fu
         expect(responseData.length).to.equal(1);
         expect(responseData[0].image).to.be.an('object');
         expect(responseData[0].image).to.include.keys(['id', 'url']);
-        expect(responseData[0].image.id).to.equal(imageId);
+        expect(responseData[0].image.id).to.have.property('id', imageId);
         expect(responseData[0].image.url).to.includes(imageId);
     });
 
@@ -119,7 +114,7 @@ describe('lesson14: TheCatAPI integration (images <-> favourites <-> votes)', fu
 
             const hasBengal = responseData.some((b: Breed) => b.id === 'beng');
 
-            expect(hasBengal).to.equal(true);
+            expect(hasBengal).to.be.true;
         });
 
         it('should list categories (GET /categories)', async () => {

@@ -12,11 +12,11 @@ export class FavouritesApi {
         return [response, data];
     }
 
-    public async listFavourites(subId: string): Promise<[APIResponse, FavouriteItem[]]> {
+    public async listFavourites(subId: string, limit = 100, order: 'ASC' | 'DESC' = 'DESC'): Promise<[APIResponse, FavouriteItem[]]> {
         const params: Record<string, string | number | boolean> = {};
         params['sub_id'] = subId;
-        params['limit'] = 100;
-        params['order'] = 'DESC';
+        params['limit'] = limit;
+        params['order'] = order;
         const response = await this.api.get('favourites', params);
         const data = await response.json();
         return [response, data];

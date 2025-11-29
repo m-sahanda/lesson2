@@ -12,11 +12,11 @@ export class VotesApi {
         return [response, data];
     }
 
-    public async listVotes(subId: string): Promise<[APIResponse, VoteItem[]]> {
+    public async listVotes(subId: string, limit = 100, order: 'ASC' | 'DESC' = 'DESC'): Promise<[APIResponse, VoteItem[]]> {
         const params: Record<string, string | number | boolean> = {};
         params['sub_id'] = subId;
-        params['limit'] = 100;
-        params['order'] = 'DESC';
+        params['limit'] = limit;
+        params['order'] = order;
         const response = await this.api.get('votes', params);
         const data = await response.json();
         return [response, data];

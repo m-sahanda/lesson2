@@ -4,6 +4,7 @@ import { Breed, Category } from '../../models/cat-api.dto';
 
 export class CatalogApi {
     public constructor(private readonly api: IApiService<APIResponse>) {}
+
     public async listBreeds(): Promise<[APIResponse, Breed[]]> {
         const response = await this.api.get('breeds');
         const data = await response.json();
