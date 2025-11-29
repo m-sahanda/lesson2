@@ -1,0 +1,7 @@
+{
+  "extension": ["ts"],
+  "require": ["tsx", "dotenv/config"],
+  "spec": "specs/**/*.ts",
+  "timeout": 10000,
+  "retries": 1
+}
