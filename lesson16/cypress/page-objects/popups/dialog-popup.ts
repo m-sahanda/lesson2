@@ -15,7 +15,6 @@ export class DialogPopup extends AddWishPopup {
     }
 
     public checkWishlistCreatedAndAddWishPopupOpened(): void {
-        cy.pause();
         this.getPopupText.should('be.visible').and('contain.text', 'Ваш перший вішліст готовий! 🎉');
         this.getCreateWishlistBtn
             .should('have.css', 'background-color', 'oklch(0.511 0.262 276.966)')

@@ -1,10 +1,10 @@
 export class MainPage {
     public goToHomePage(): void {
-        cy.visit('https://wishpicks.com/');
+        cy.visit(Cypress.env('BASE_URL'));
     }
 
     public goToWishlistsPage(): void {
-        cy.visit('https://wishpicks.com/uk/wishlists');
+        cy.visit(`${Cypress.env('BASE_URL')}/uk/wishlists`);
     }
 
     public acceptCookies(): void {

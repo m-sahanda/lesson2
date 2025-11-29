@@ -1,10 +1,12 @@
 export class OnboardingPopup {
+    private readonly popupLocator = '[id^="headlessui-dialog-panel"]';
+
     public get getPopup(): Cypress.Chainable {
-        return cy.get('[id^="headlessui-dialog-panel"]');
+        return cy.get(this.popupLocator);
     }
 
     public get getCreateWishlistBtn(): Cypress.Chainable {
-        return cy.get('[id^="headlessui-dialog-panel"] a[href="/uk/wishlist/new?referralInfo=wishlists_onboarding"]');
+        return cy.get(`${this.popupLocator} a[href="/uk/wishlist/new?referralInfo=wishlists_onboarding"]`);
     }
 
     public checkAndClickCreateWishlistBtn = (): void => {
