@@ -1,0 +1,8 @@
+{
+  "extension": "ts",
+  "spec": "specs/**/*.spec.ts",
+  "require": ["tsx"],
+  "file": ["services/config.ts"],
+  "retries": 2,
+  "timeout": 120000
+}
