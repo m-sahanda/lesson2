@@ -13,22 +13,22 @@ test.describe('Wishpicks main page spec', () => {
     });
 
     test('check anchor link to "How it works" header', async () => {
-        await expect(mainPage.getHowItWorksButton).toBeVisible();
-        await mainPage.getHowItWorksButton.click();
-        await expect(mainPage.getHowItWorksSectionTitle).toBeVisible();
-        await expect(mainPage.getHowItWorksSectionTitle).toHaveText('Як створити вішліст на Wishpicks');
+        await expect(mainPage.howItWorksButton).toBeVisible();
+        await mainPage.howItWorksButton.click();
+        await expect(mainPage.howItWorksSectionTitle).toBeVisible();
+        await expect(mainPage.howItWorksSectionTitle).toHaveText('Як створити вішліст на Wishpicks');
     });
 
     test('check blog page open and contain 4 blog items', async () => {
-        await mainPage.getBlogButton.click();
-        await helpers.checkItemsVisibleWithLen(mainPage.getBlogItems, 4);
-        await helpers.checkItemsVisibleWithLen(mainPage.getBlogItemsImages, 4);
-        await expect(mainPage.getBlogItemsImages.first()).toHaveAttribute('src', /\/_next\/image\?/);
+        await mainPage.blogButton.click();
+        await helpers.checkItemsVisibleWithLen(mainPage.blogItems, 4);
+        await helpers.checkItemsVisibleWithLen(mainPage.blogItemsImages, 4);
+        await expect(mainPage.blogItemsImages.first()).toHaveAttribute('src', /\/_next\/image\?/);
     });
 
     test('create wishlist', async ({ page }) => {
         const dialogPopup = new DialogPopup(page);
-        await mainPage.getCreateWishlistButton.click();
+        await mainPage.createWishlistButton.click();
         await dialogPopup.checkWishlistCreatedAndAddWishPopupOpened();
     });
 });

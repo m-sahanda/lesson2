@@ -13,7 +13,7 @@ export class MainPage {
 
     public async acceptCookiesIfPresent(): Promise<void> {
         const btn = this.page.locator('#cookiescript_accept');
-        if (await btn.isVisible().catch(() => false)) {
+        if (await btn.isVisible()) {
             await btn.click();
         }
     }
@@ -23,27 +23,27 @@ export class MainPage {
         await this.acceptCookiesIfPresent();
     }
 
-    public get getHowItWorksButton(): Locator {
+    public get howItWorksButton(): Locator {
         return this.page.locator('a[href="#how-it-works"]');
     }
 
-    public get getHowItWorksSectionTitle(): Locator {
+    public get howItWorksSectionTitle(): Locator {
         return this.page.locator('#how-it-works h2.font-header');
     }
 
-    public get getBlogButton(): Locator {
+    public get blogButton(): Locator {
         return this.page.locator('[href="/uk/blog"]');
     }
 
-    public get getBlogItems(): Locator {
+    public get blogItems(): Locator {
         return this.page.locator('.group .cursor-pointer');
     }
 
-    public get getBlogItemsImages(): Locator {
-        return this.getBlogItems.locator('img');
+    public get blogItemsImages(): Locator {
+        return this.blogItems.locator('img');
     }
 
-    public get getCreateWishlistButton(): Locator {
+    public get createWishlistButton(): Locator {
         return this.page.locator('.relative.z-10 .mt-10 button');
     }
 }

@@ -7,28 +7,28 @@ test.describe('Wishpicks main page spec with fixtures', () => {
     });
 
     test('check anchor link to "How it works" header', async ({ mainPage }) => {
-        await expect(mainPage.getHowItWorksButton).toBeVisible();
+        await expect(mainPage.howItWorksButton).toBeVisible();
 
-        await mainPage.getHowItWorksButton.click();
+        await mainPage.howItWorksButton.click();
 
-        await expect(mainPage.getHowItWorksSectionTitle).toBeVisible();
-        await expect(mainPage.getHowItWorksSectionTitle).toHaveText('Як створити вішліст на Wishpicks');
+        await expect(mainPage.howItWorksSectionTitle).toBeVisible();
+        await expect(mainPage.howItWorksSectionTitle).toHaveText('Як створити вішліст на Wishpicks');
     });
 
     test('check blog page open and contain 4 blog items', async ({ mainPage }) => {
-        await mainPage.getBlogButton.click();
+        await mainPage.blogButton.click();
 
-        await helpers.checkItemsVisibleWithLen(mainPage.getBlogItems, 4);
-        await helpers.checkItemsVisibleWithLen(mainPage.getBlogItemsImages, 4);
-        await expect(mainPage.getBlogItemsImages.first()).toHaveAttribute('src', /\/_next\/image\?/);
+        await helpers.checkItemsVisibleWithLen(mainPage.blogItems, 4);
+        await helpers.checkItemsVisibleWithLen(mainPage.blogItemsImages, 4);
+        await expect(mainPage.blogItemsImages.first()).toHaveAttribute('src', /\/_next\/image\?/);
     });
 
     test('create wishlist', async ({ mainPage, dialogPopup, addWishPopup }) => {
-        await mainPage.getCreateWishlistButton.click();
+        await mainPage.createWishlistButton.click();
         await dialogPopup.checkWishlistCreatedAndAddWishPopupOpened();
 
-        await expect(addWishPopup.getAddWishInput).toBeVisible();
-        await expect(addWishPopup.getAddWishInput).toHaveAttribute('placeholder', 'https:// або назва бажання');
+        await expect(addWishPopup.addWishInput).toBeVisible();
+        await expect(addWishPopup.addWishInput).toHaveAttribute('placeholder', 'https:// або назва бажання');
     });
 });
 
