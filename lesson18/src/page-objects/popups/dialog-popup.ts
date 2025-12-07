@@ -20,6 +20,10 @@ export class DialogPopup extends AddWishPopup {
         return this.popupLocator.locator('.items-start .mt-5 [type="button"]:first-child');
     }
 
+    public async closePopup(): Promise<void> {
+        await this.popup.locator('.sr-only').click();
+    }
+
     public async checkWishlistCreatedAndAddWishPopupOpened(): Promise<void> {
         await expect(this.popupText).toBeVisible();
         await expect(this.popupText).toContainText('Ваш перший вішліст готовий! 🎉');
