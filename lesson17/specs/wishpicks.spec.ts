@@ -1,5 +1,5 @@
 import { WebDriver } from 'selenium-webdriver';
-import { closeBrowserInstance, getBrowserInstance } from '../src/driver-manager';
+import { clickSafe, closeBrowserInstance, getBrowserInstance } from '../src/driver-manager';
 import { expect } from 'chai';
 import { MainPage } from '../src/page-objects/pages/main-page';
 import { DialogPopup } from '../src/page-objects/popups/dialog-popup';
@@ -22,7 +22,7 @@ describe('Wishpicks main page spec', () => {
 
     it('check anchor link to "How it works" header', async function () {
         const howBtn = await mainPage.getHowItWorksButton();
-        await howBtn.click();
+        await clickSafe(driver, howBtn);
         const title = await mainPage.getHowItWorksSectionTitle();
 
         expect(await title.isDisplayed()).to.equal(true);
@@ -31,7 +31,7 @@ describe('Wishpicks main page spec', () => {
 
     it('check blog page open and contain 4 blog items', async function () {
         const blogBtn = await mainPage.getBlogButton();
-        await blogBtn.click();
+        await clickSafe(driver, blogBtn);
 
         const items = await mainPage.getBlogItems();
         expect(items.length).to.equal(4);
@@ -47,7 +47,7 @@ describe('Wishpicks main page spec', () => {
 
     it('create wishlist', async function () {
         const createBtn = await mainPage.getCreateWishlistButton();
-        await createBtn.click();
+        await clickSafe(driver, createBtn);
 
         const dialog = new DialogPopup(driver);
         await dialog.checkWishlistCreatedAndAddWishPopupOpened();
