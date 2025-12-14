@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    name: Test Playwright
     runs-on: ubuntu-latest
     defaults:
       run:
