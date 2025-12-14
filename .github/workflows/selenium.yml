@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BASE_URL: ${{ secrets.BASE_URL }}
-      LOCALE: uk
     defaults:
       run:
         working-directory: lesson17
