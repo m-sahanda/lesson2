@@ -11,3 +11,4 @@ build/
 .github
 allure-results/
 allure-report/
+.auth/
