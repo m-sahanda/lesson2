@@ -10,3 +10,4 @@ build/
 /src/*.j
 .github
 allure-results/
+allure-report/

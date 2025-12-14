@@ -6,7 +6,8 @@
   "scripts": {
     "test": "eslint . && playwright test",
     "test:report": "eslint . && playwright test & npx allure serve allure-results",
-    "allure_generate": "npx allure serve allure-results"
+    "test:single-file-report": "eslint . && playwright test & npx allure generate --single-file",
+    "allure-generate": "npx allure serve allure-results"
   },
   "keywords": [],
   "author": "",
