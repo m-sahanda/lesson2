@@ -1,7 +1,10 @@
 import { Page, Locator } from '@playwright/test';
+import { BasePage } from './base-page';
 
-export class MainPage {
-    public constructor(private readonly page: Page) {}
+export class MainPage extends BasePage {
+    public constructor(private readonly page: Page) {
+        super(page);
+    }
 
     public async goToHomePage(): Promise<void> {
         await this.page.goto('/');

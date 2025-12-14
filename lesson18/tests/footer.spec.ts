@@ -5,20 +5,20 @@ test.describe('footer', () => {
         await mainPage.goToHomePage();
     });
 
-    test('change language btn visible in footer on main page', async ({ footer }) => {
-        await footer.changeLanguageBtn.scrollIntoViewIfNeeded();
-        await footer.assertFooterItemsVisible();
+    test('change language btn visible in footer on main page', async ({ mainPage }) => {
+        await mainPage.footer.changeLanguageBtn.scrollIntoViewIfNeeded();
+        await mainPage.footer.assertFooterItemsVisible();
     });
 
-    test('change language btn is visible in footer on blog page', async ({ mainPage, footer }) => {
+    test('change language btn is visible in footer on blog page', async ({ mainPage }) => {
         await mainPage.blogButton.click();
-        await footer.changeLanguageBtn.scrollIntoViewIfNeeded();
-        await footer.assertFooterItemsVisible();
+        await mainPage.footer.changeLanguageBtn.scrollIntoViewIfNeeded();
+        await mainPage.footer.assertFooterItemsVisible();
     });
 
-    test('change language btn is visible in footer on wishlists page', async ({ mainPage, footer }) => {
+    test('change language btn is visible in footer on wishlists page', async ({ mainPage }) => {
         await mainPage.goToWishlistsPage();
-        await footer.changeLanguageBtn.scrollIntoViewIfNeeded();
-        await footer.assertFooterItemsVisible();
+        await mainPage.footer.changeLanguageBtn.scrollIntoViewIfNeeded();
+        await mainPage.footer.assertFooterItemsVisible();
     });
 });
