@@ -10,6 +10,8 @@ jobs:
   test:
     name: Test Selenium
     runs-on: ubuntu-latest
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
     defaults:
       run:
         working-directory: lesson17
