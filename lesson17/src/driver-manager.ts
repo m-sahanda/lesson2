@@ -11,6 +11,7 @@ export async function getBrowserInstance(): Promise<WebDriver> {
         '--window-size=1920,1080',
         '--lang=uk'
     );
+    options.setUserPreferences?.({ 'intl.accept_languages': 'uk' });
     const driver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(options).build();
     await driver.manage().window().maximize();
     return driver;
