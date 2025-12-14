@@ -27,9 +27,10 @@ jobs:
       - name: Install deps
         run: npm ci
 
-
-      - name: Install mochawesome reporter
-        run: npm i -D mochawesome
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
 
       - name: Run Mocha tests with HTML report
         run: npx mocha --reporter mochawesome --reporter-options reportDir=mochawesome-report,reportFilename=index,inline=true
