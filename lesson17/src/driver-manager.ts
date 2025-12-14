@@ -24,7 +24,7 @@ export async function clickSafe(driver: WebDriver, el: WebElement, timeout = 150
     try {
         await el.click();
     } catch (e) {
-        console.log(e);
+        console.log(e, 'Element is not clickable, trying to click via JS');
         await driver.executeScript('arguments[0].click();', el);
     }
 }
