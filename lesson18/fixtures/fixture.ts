@@ -1,8 +1,8 @@
 import { test as base } from '@playwright/test';
-import { MainPage } from '../page-objects/pages/main-page';
-import { DialogPopup } from '../page-objects/popups/dialog-popup';
-import { OnboardingPopup } from '../page-objects/popups/onboarding-popup';
-import { AddWishPopup } from '../page-objects/popups/add-wish-popup';
+import { MainPage } from '../src/page-objects/pages/main-page';
+import { DialogPopup } from '../src/page-objects/popups/dialog-popup';
+import { OnboardingPopup } from '../src/page-objects/popups/onboarding-popup';
+import { AddWishPopup } from '../src/page-objects/popups/add-wish-popup';
 
 interface Fixture {
     mainPage: MainPage;
