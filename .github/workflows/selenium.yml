@@ -1,0 +1,46 @@
+name: Selenium Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test Selenium
+    runs-on: ubuntu-latest
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+    defaults:
+      run:
+        working-directory: lesson17
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: lesson17/package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Run Mocha tests with HTML report
+        run: npx mocha --timeout 30000 --reporter mochawesome --reporter-options reportDir=mochawesome-report,reportFilename=index,inline=true
+
+      - name: Upload Selenium HTML report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-report
+          path: lesson17/mochawesome-report/
+          retention-days: 30

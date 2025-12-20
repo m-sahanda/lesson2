@@ -58,7 +58,7 @@ export default defineConfig({
                 // Use prepared auth state.
                 storageState: '.auth/cookie.json',
                 locale: 'uk-UA',
-                headless: false
+                headless: true
             },
             dependencies: ['setup']
         }
