@@ -1,0 +1,66 @@
+name: Playwright Tests (Docker)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Tests in Docker
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          echo "LOGIN=${{ secrets.LOGIN }}" >> Final_project/.env
+          echo "PASSWORD=${{ secrets.PASSWORD }}" >> Final_project/.env
+
+      - name: Build and Run Tests in Docker
+        working-directory: Final_project
+        run: docker compose run --rm playwright
+
+      - name: Generate Allure Report
+        if: always()
+        working-directory: Final_project
+        run: |
+          sudo chown -R $USER:$USER .
+          npx allure-commandline generate allure-results --clean -o allure-report
+
+      - name: Upload Playwright HTML Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: Final_project/playwright-report/
+          retention-days: 30
+
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: Final_project/allure-report/
+          retention-days: 30
+
+      - name: Deploy to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: Final_project/allure-report
+          destination_dir: allure-report
+
+      - name: Add Link to Summary
+        if: always()
+        run: |
+            echo "### Test Reports" >> $GITHUB_STEP_SUMMARY
+            echo "🚀 [Allure Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/allure-report/)" >> $GITHUB_STEP_SUMMARY
+            echo "📂 [Download Playwright HTML Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
