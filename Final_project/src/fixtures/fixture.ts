@@ -1,12 +1,11 @@
-import {test as base} from '@playwright/test';
-import {MainPage} from '../pages/main-page';
-import {PlaywrightApiService} from '../../services/playwright-api.service';
-import {ApiConstructor} from '../api/api-constructor';
-import {IncomesPage} from '../pages/incomes-page';
-import {ExpensesPage} from '../pages/expenses-page';
+import { test as base } from '@playwright/test';
+import { MainPage } from '../pages/main-page';
+import { PlaywrightApiService } from '../../services/playwright-api.service';
+import { ApiConstructor } from '../api/api-constructor';
+import { IncomesPage } from '../pages/incomes-page';
+import { ExpensesPage } from '../pages/expenses-page';
 import * as fs from 'fs';
 import path from 'node:path';
-
 
 interface Fixture {
     mainPage: MainPage;
@@ -22,8 +21,8 @@ interface Fixture {
 const storageStatePath = (type: string): string => `.auth/${type}-storage-state.json`;
 
 export const test = base.extend<Fixture>({
-
-    apiStorageState: async ({}, use) => {
+    apiStorageState: async ({ browser }, use) => {
+        console.log(`${browser} is running`);
         const authFile = storageStatePath('api');
         await getStorageStateFile(authFile);
         await use(authFile);
