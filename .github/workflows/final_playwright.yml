@@ -11,6 +11,9 @@ jobs:
     name: Run Tests in Docker
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,6 +31,7 @@ jobs:
         if: always()
         working-directory: Final_project
         run: |
+          npm install allure-commandline
           npx allure generate allure-results --clean -o allure-report
 
       - name: Upload Playwright HTML Report
