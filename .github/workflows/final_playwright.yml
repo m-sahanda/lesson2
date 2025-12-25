@@ -57,3 +57,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: Final_project/allure-report
           destination_dir: allure-report
+
+      - name: Add Link to Summary
+        if: always()
+        run: |
+            echo "### Test Reports" >> $GITHUB_STEP_SUMMARY
+            echo "🚀 [Allure Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/allure-report/)" >> $GITHUB_STEP_SUMMARY
+            echo "📂 [Download Playwright HTML Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
